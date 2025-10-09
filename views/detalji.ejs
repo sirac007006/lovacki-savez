@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalji dozvole - Lovački Savez Crne Gore</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+    
+    <div class="container">
+        <div class="page-header">
+            <h1>Detalji lovačke dozvole</h1>
+            <div class="header-actions">
+                <a href="/uredi/<%= lovac.id %>" class="btn btn-primary">
+                    <i class="fas fa-edit"></i> Uredi
+                </a>
+                <a href="/" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Nazad
+                </a>
+            </div>
+        </div>
+
+        <div class="details-card">
+            <div class="details-section">
+                <h3>Osnovni podaci o knjizi</h3>
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <span class="detail-label">Broj knjige:</span>
+                        <span class="detail-value"><%= lovac.broj_knjige ? lovac.broj_knjige : '/' %></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Broj stranice:</span>
+                        <span class="detail-value"><%= lovac.broj_stranice ? lovac.broj_stranice : '/' %></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Redni broj:</span>
+                        <span class="detail-value"><%= lovac.redni_broj ? lovac.redni_broj : '/' %></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="details-section">
+                <h3>Lični podaci</h3>
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <span class="detail-label">Prezime:</span>
+                        <span class="detail-value"><%= lovac.prezime %></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Ime:</span>
+                        <span class="detail-value"><%= lovac.ime %></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Očevo ime:</span>
+                        <span class="detail-value"><%= lovac.ocevo_ime ? lovac.ocevo_ime : '/' %></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Datum rođenja:</span>
+                        <span class="detail-value"><%= lovac.datum_rodjenja || '/' %></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Mjesto rođenja:</span>
+                        <span class="detail-value"><%= lovac.mjesto_rodjenja ? lovac.mjesto_rodjenja : '/' %></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="details-section">
+                <h3>Podaci o prijavi</h3>
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <span class="detail-label">Datum podnijete prijave:</span>
+                        <span class="detail-value">
+                            <%= lovac.datum_prijave || '/' %>
+                        </span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Broj podnijete prijave:</span>
+                        <span class="detail-value"><%= lovac.broj_podnijete_prijave ? lovac.broj_podnijete_prijave : '/' %></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="details-section">
+                <h3>Podaci o polaganju</h3>
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <span class="detail-label">Datum polaganja:</span>
+                        <span class="detail-value">
+                            <%= lovac.datum_polaganja || '/' %>
+                        </span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Mjesto polaganja:</span>
+                        <span class="detail-value"><%= lovac.mjesto_polaganja ? lovac.mjesto_polaganja : '/' %></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="details-section">
+                <h3>Podaci o izdatom uvjerenju</h3>
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <span class="detail-label">Datum izdatog uvjerenja:</span>
+                        <span class="detail-value">
+                            <%= lovac.datum_izdatog_uvjerenja || '/' %>
+                        </span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Djelovodni broj:</span>
+                        <span class="detail-value"><%= lovac.djelovodni_broj ? lovac.djelovodni_broj : '/' %></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="details-section">
+                <h3>Dodatni podaci</h3>
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <span class="detail-label">Član lovačke organizacije:</span>
+                        <span class="detail-value"><%= lovac.clan_lovacke_organizacije ? lovac.clan_lovacke_organizacije : '/' %></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Opština:</span>
+                        <span class="detail-value"><%= lovac.opstina ? lovac.opstina : '/' %></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="details-actions">
+                <form method="POST" action="/obrisi/<%= lovac.id %>" onsubmit="return confirm('Da li ste sigurni da želite da obrišete ovu dozvolu?');">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> Obriši dozvolu
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

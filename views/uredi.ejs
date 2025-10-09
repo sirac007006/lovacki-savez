@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang=sr>
+<head>
+    <meta charset=UTF-8>
+    <meta name=viewport content=width=device-width, initial-scale=1.0>
+    <title>Uredi dozvolu - Lovački Savez Crne Gore</title>
+    <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css>
+    <link rel=stylesheet href=/style.css>
+</head>
+<body>
+    <%- include('partials/header') %>
+    
+    <div class=container>
+        <div class=page-header>
+            <h1>Uređivanje lovačke dozvole</h1>
+            <a href=/dozvola/<%= lovac.id %> class=btn btn-secondary>
+                <i class=fas fa-arrow-left></i> Nazad
+            </a>
+        </div>
+
+        <form method=POST action=/uredi/<%= lovac.id %> class=form-card>
+            <div class=form-section>
+                <h3>Osnovni podaci o knjizi</h3>
+                <div class=form-row>
+                    <div class=form-group>
+                        <label for=broj_knjige>Broj knjige</label>
+                        <input type=text id=broj_knjige name=broj_knjige value=<%= lovac.broj_knjige || '' %>>
+                    </div>
+                    <div class=form-group>
+                        <label for=broj_stranice>Broj stranice</label>
+                        <input type=text id=broj_stranice name=broj_stranice value=<%= lovac.broj_stranice || '' %>>
+                    </div>
+                    <div class=form-group>
+                        <label for=redni_broj>Redni broj</label>
+                        <input type=text id=redni_broj name=redni_broj value=<%= lovac.redni_broj || '' %>>
+                    </div>
+                </div>
+            </div>
+
+            <div class=form-section>
+                <h3>Lični podaci</h3>
+                <div class=form-row>
+                    <div class=form-group>
+                        <label for=prezime>Prezime *</label>
+                        <input type=text id=prezime name=prezime value=<%= lovac.prezime %> required>
+                    </div>
+                    <div class=form-group>
+                        <label for=ime>Ime *</label>
+                        <input type=text id=ime name=ime value=<%= lovac.ime %> required>
+                    </div>
+                    <div class=form-group>
+                        <label for=ocevo_ime>Očevo ime</label>
+                        <input type=text id=ocevo_ime name=ocevo_ime value=<%= lovac.ocevo_ime || '' %>>
+                    </div>
+                </div>
+
+                <div class=form-row>
+                    <div class=form-group>
+                        <label>Datum rođenja</label>
+                        <div class=date-inputs>
+                            <input type=number name=datum_rodjenja_d placeholder=DD min=1 max=31 
+                                value=<%= lovac.datum_rodjenja ? new Date(lovac.datum_rodjenja).getDate() : '' %>>
+                            <input type=number name=datum_rodjenja_m placeholder=MM min=1 max=12
+                                value=<%= lovac.datum_rodjenja ? new Date(lovac.datum_rodjenja).getMonth() + 1 : '' %>>
+                            <input type=number name=datum_rodjenja_g placeholder=GGGG min=1900 max=2025
+                                value=<%= lovac.datum_rodjenja ? new Date(lovac.datum_rodjenja).getFullYear() : '' %>>
+                        </div>
+                    </div>
+                    <div class=form-group>
+                        <label for=mjesto_rodjenja>Mjesto rođenja</label>
+                        <input type=text id=mjesto_rodjenja name=mjesto_rodjenja value=<%= lovac.mjesto_rodjenja || '' %>>
+                    </div>
+                </div>
+            </div>
+
+            <div class=form-section>
+                <h3>Podaci o prijavi</h3>
+                <div class=form-row>
+                    <div class=form-group>
+                        <label>Datum podnijete prijave</label>
+                        <div class=date-inputs>
+                            <input type=number name=datum_prijave_d placeholder=DD min=1 max=31
+                                value=<%= lovac.datum_prijave ? new Date(lovac.datum_prijave).getDate() : '' %>>
+                            <input type=number name=datum_prijave_m placeholder=MM min=1 max=12
+                                value=<%= lovac.datum_prijave ? new Date(lovac.datum_prijave).getMonth() + 1 : '' %>>
+                            <input type=number name=datum_prijave_g placeholder=GGGG min=1900 max=2025
+                                value=<%= lovac.datum_prijave ? new Date(lovac.datum_prijave).getFullYear() : '' %>>
+                        </div>
+                    </div>
+                    <div class=form-group>
+                        <label for=broj_podnijete_prijave>Broj podnijete prijave</label>
+                        <input type=text id=broj_podnijete_prijave name=broj_podnijete_prijave value=<%= lovac.broj_podnijete_prijave || '' %>>
+                    </div>
+                </div>
+            </div>
+
+            <div class=form-section>
+                <h3>Podaci o polaganju</h3>
+                <div class=form-row>
+                    <div class=form-group>
+                        <label>Datum polaganja</label>
+                        <div class=date-inputs>
+                            <input type=number name=datum_polaganja_d placeholder=DD min=1 max=31
+                                value=<%= lovac.datum_polaganja ? new Date(lovac.datum_polaganja).getDate() : '' %>>
+                            <input type=number name=datum_polaganja_m placeholder=MM min=1 max=12
+                                value=<%= lovac.datum_polaganja ? new Date(lovac.datum_polaganja).getMonth() + 1 : '' %>>
+                            <input type=number name=datum_polaganja_g placeholder=GGGG min=1900 max=2025
+                                value=<%= lovac.datum_polaganja ? new Date(lovac.datum_polaganja).getFullYear() : '' %>>
+                        </div>
+                    </div>
+                    <div class=form-group>
+                        <label for=mjesto_polaganja>Mjesto polaganja</label>
+                        <input type=text id=mjesto_polaganja name=mjesto_polaganja value=<%= lovac.mjesto_polaganja || '' %>>
+                    </div>
+                </div>
+            </div>
+
+            <div class=form-section>
+                <h3>Podaci o izdatom uvjerenju</h3>
+                <div class=form-row>
+                    <div class=form-group>
+                        <label>Datum izdatog uvjerenja</label>
+                        <div class=date-inputs>
+                            <input type=number name=datum_izdatog_uvjerenja_d placeholder=DD min=1 max=31
+                                value=<%= lovac.datum_izdatog_uvjerenja ? new Date(lovac.datum_izdatog_uvjerenja).getDate() : '' %>>
+                            <input type=number name=datum_izdatog_uvjerenja_m placeholder=MM min=1 max=12
+                                value=<%= lovac.datum_izdatog_uvjerenja ? new Date(lovac.datum_izdatog_uvjerenja).getMonth() + 1 : '' %>>
+                            <input type=number name=datum_izdatog_uvjerenja_g placeholder=GGGG min=1900 max=2025
+                                value=<%= lovac.datum_izdatog_uvjerenja ? new Date(lovac.datum_izdatog_uvjerenja).getFullYear() : '' %>>
+                        </div>
+                    </div>
+                    <div class=form-group>
+                        <label for=djelovodni_broj>Djelovodni broj</label>
+                        <input type=text id=djelovodni_broj name=djelovodni_broj value=<%= lovac.djelovodni_broj || '' %>>
+                    </div>
+                </div>
+            </div>
+
+            <div class=form-section>
+                <h3>Dodatni podaci</h3>
+                <div class=form-row>
+                    <div class=form-group>
+                        <label for=clan_lovacke_organizacije>Član lovačke organizacije</label>
+                        <input type=text id=clan_lovacke_organizacije name=clan_lovacke_organizacije value=<%= lovac.clan_lovacke_organizacije || '' %>>
+                    </div>
+                    <div class=form-group>
+                        <label for=opstina>Opština</label>
+                        <input type=text id=opstina name=opstina value=<%= lovac.opstina || '' %>>
+                    </div>
+                </div>
+            </div>
+
+            <div class=form-actions>
+                <button type=submit class=btn btn-primary btn-large>
+                    Sačuvaj izmjene
+                </button>
+                <a href=/dozvola/<%= lovac.id %> class=btn btn-secondary btn-large>
+                    Otkaži
+                </a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

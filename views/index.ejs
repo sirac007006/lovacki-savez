@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pregled dozvola - Lovački Savez Crne Gore</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+    
+    <div class="container">
+        <div class="page-header">
+            <h1>Pregled lovačkih dozvola</h1>
+            <a href="/nova-dozvola" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Nova dozvola
+            </a>
+        </div>
+
+        <% if (lovci && lovci.length > 0) { %>
+
+
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Br. knjige</th>
+                            <th>Redni broj</th>
+                            <th>Ime i prezime</th>
+                            <th>Ime oca</th>
+                            <th>Datum rođenja</th>
+                            <th>Mjesto rođenja</th>
+                            <th>Lovačka organizacija</th>
+                            <th>Akcije</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% lovci.forEach(lovac => { %>
+                            <tr>
+                                <td><%= lovac.broj_knjige || '-' %></td>
+                                <td><%= lovac.redni_broj || '-' %></td>
+                                <td class="name-cell"><%= lovac.ime %> <%= lovac.prezime %></td>
+                                <td><%= lovac.ocevo_ime || '-' %></td>
+                                <td><%= lovac.datum_rodjenja || '-' %></td>
+                                <td><%= lovac.mjesto_rodjenja || '-' %></td>
+                                <td><%= lovac.clan_lovacke_organizacije || '-' %></td>
+                                <td class="actions-cell">
+                                    <a href="/dozvola/<%= lovac.id %>" class="btn-icon btn-view" title="Pregled">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="/uredi/<%= lovac.id %>" class="btn-icon btn-edit" title="Uredi">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Paginacija -->
+            <% if (totalPages > 1) { %>
+                <div class="pagination">
+                    <% if (currentPage > 1) { %>
+                        <a href="/?page=1" class="pagination-btn">
+                            <i class="fas fa-angle-double-left"></i>
+                        </a>
+                        <a href="/?page=<%= currentPage - 1 %>" class="pagination-btn">
+                            <i class="fas fa-angle-left"></i>
+                        </a>
+                    <% } %>
+
+                    <% 
+                        let startPage = Math.max(1, currentPage - 2);
+                        let endPage = Math.min(totalPages, currentPage + 2);
+                        
+                        if (currentPage <= 3) {
+                            endPage = Math.min(5, totalPages);
+                        }
+                        if (currentPage > totalPages - 3) {
+                            startPage = Math.max(1, totalPages - 4);
+                        }
+                    %>
+
+                    <% if (startPage > 1) { %>
+                        <a href="/?page=1" class="pagination-btn">1</a>
+                        <% if (startPage > 2) { %>
+                            <span class="pagination-dots">...</span>
+                        <% } %>
+                    <% } %>
+
+                    <% for (let i = startPage; i <= endPage; i++) { %>
+                        <a href="/?page=<%= i %>" class="pagination-btn <%= i === currentPage ? 'active' : '' %>">
+                            <%= i %>
+                        </a>
+                    <% } %>
+
+                    <% if (endPage < totalPages) { %>
+                        <% if (endPage < totalPages - 1) { %>
+                            <span class="pagination-dots">...</span>
+                        <% } %>
+                        <a href="/?page=<%= totalPages %>" class="pagination-btn"><%= totalPages %></a>
+                    <% } %>
+
+                    <% if (currentPage < totalPages) { %>
+                        <a href="/?page=<%= currentPage + 1 %>" class="pagination-btn">
+                            <i class="fas fa-angle-right"></i>
+                        </a>
+                        <a href="/?page=<%= totalPages %>" class="pagination-btn">
+                            <i class="fas fa-angle-double-right"></i>
+                        </a>
+                    <% } %>
+                </div>
+
+                <div class="pagination-info-bottom">
+                    <p>Stranica <%= currentPage %> od <%= totalPages %></p>
+                </div>
+            <% } %>
+
+        <% } else { %>
+            <div class="empty-state">
+                <div class="empty-icon"><i class="fas fa-clipboard-list"></i></div>
+                <h2>Nema unesenih dozvola</h2>
+                <p>Kliknite na dugme Nova dozvola da dodate prvu dozvolu.</p>
+            </div>
+        <% } %>
+    </div>
+</body>
+</html>
