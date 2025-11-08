@@ -78,7 +78,7 @@
                         </span>
                     </div>
                     <div class="detail-item">
-                        <span class="detail-label">Broj podnijete prijave:</span>
+                        <span class="detail-label">Broj prijave:</span>
                         <span class="detail-value"><%= lovac.broj_prijave ? lovac.broj_prijave : '/' %></span>
                     </div>
                 </div>
@@ -112,6 +112,25 @@
                     <div class="detail-item">
                         <span class="detail-label">Djelovodni broj:</span>
                         <span class="detail-value"><%= lovac.djelovodni_broj ? lovac.djelovodni_broj : '/' %></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DODATE NOVE KOLONE -->
+            <div class="details-section">
+                <h3>Ostali podaci</h3>
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <span class="detail-label">Država:</span>
+                        <span class="detail-value"><%= lovac.drzava ? lovac.drzava : '/' %></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">JMBG:</span>
+                        <span class="detail-value"><%= lovac.jmbg ? lovac.jmbg : '/' %></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Broj uverenja:</span>
+                        <span class="detail-value"><%= lovac.broj_uverenja ? lovac.broj_uverenja : '/' %></span>
                     </div>
                 </div>
             </div>
