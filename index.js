@@ -153,7 +153,7 @@ app.post('/nova-dozvola', requireAuth, async (req, res) => {
         datum_prijave_d,
         datum_prijave_m,
         datum_prijave_g,
-        broj_podnijete_prijave,
+        broj_prijave,
         datum_polaganja_d,
         datum_polaganja_m,
         datum_polaganja_g,
@@ -163,7 +163,10 @@ app.post('/nova-dozvola', requireAuth, async (req, res) => {
         datum_izdatog_uvjerenja_g,
         djelovodni_broj,
         clan_lovacke_organizacije,
-        opstina
+        opstina,
+        drzava,
+        jmbg,
+        broj_uverenja
     } = req.body;
 
     const datum_rodjenja = `${datum_rodjenja_g}-${datum_rodjenja_m}-${datum_rodjenja_d}`;
@@ -175,15 +178,17 @@ app.post('/nova-dozvola', requireAuth, async (req, res) => {
         await db.query(
             `INSERT INTO lovci (
                 broj_knjige, broj_stranice, redni_broj, ime, ocevo_ime, prezime,
-                datum_rodjenja, mjesto_rodjenja, datum_prijave, broj_podnijete_prijave,
+                datum_rodjenja, mjesto_rodjenja, datum_prijave, broj_prijave,
                 datum_polaganja, mjesto_polaganja, datum_izdatog_uvjerenja,
-                djelovodni_broj, clan_lovacke_organizacije, opstina, sjediste
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)`,
+                djelovodni_broj, clan_lovacke_organizacije, opstina,
+                drzava, jmbg, broj_uverenja
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)`,
             [
                 broj_knjige, broj_stranice, redni_broj, ime, ocevo_ime, prezime,
-                datum_rodjenja, mjesto_rodjenja, datum_prijave, broj_podnijete_prijave,
+                datum_rodjenja, mjesto_rodjenja, datum_prijave, broj_prijave,
                 datum_polaganja, mjesto_polaganja, datum_izdatog_uvjerenja,
-                djelovodni_broj, clan_lovacke_organizacije, opstina, ''
+                djelovodni_broj, clan_lovacke_organizacije, opstina,
+                drzava, jmbg, broj_uverenja
             ]
         );
         res.redirect('/?success=true');
@@ -221,7 +226,10 @@ app.post('/pretraga', requireAuth, async (req, res) => {
                 OR LOWER(prezime) LIKE LOWER($3)
                 OR LOWER(ocevo_ime) LIKE LOWER($3)
                 OR broj_knjige::text LIKE $3
-                OR redni_broj::text LIKE $3`;
+                OR redni_broj::text LIKE $3
+                OR LOWER(drzava) LIKE LOWER($3)
+                OR LOWER(jmbg) LIKE LOWER($3)
+                OR broj_uverenja::text LIKE $3`;
             
             query = `SELECT * FROM lovci 
                 WHERE (LOWER(ime) LIKE LOWER($1) AND LOWER(prezime) LIKE LOWER($2))
@@ -233,6 +241,9 @@ app.post('/pretraga', requireAuth, async (req, res) => {
                 OR LOWER(ocevo_ime) LIKE LOWER($3)
                 OR broj_knjige::text LIKE $3
                 OR redni_broj::text LIKE $3
+                OR LOWER(drzava) LIKE LOWER($3)
+                OR LOWER(jmbg) LIKE LOWER($3)
+                OR broj_uverenja::text LIKE $3
                 ORDER BY 
                     CASE 
                         WHEN LOWER(ime) LIKE LOWER($1) AND LOWER(prezime) LIKE LOWER($2) THEN 1
@@ -250,7 +261,10 @@ app.post('/pretraga', requireAuth, async (req, res) => {
                 OR LOWER(prezime) LIKE LOWER($1)
                 OR LOWER(ocevo_ime) LIKE LOWER($1)
                 OR broj_knjige::text LIKE $1
-                OR redni_broj::text LIKE $1`;
+                OR redni_broj::text LIKE $1
+                OR LOWER(drzava) LIKE LOWER($1)
+                OR LOWER(jmbg) LIKE LOWER($1)
+                OR broj_uverenja::text LIKE $1`;
             
             query = `SELECT * FROM lovci 
                 WHERE LOWER(ime) LIKE LOWER($1) 
@@ -258,6 +272,9 @@ app.post('/pretraga', requireAuth, async (req, res) => {
                 OR LOWER(ocevo_ime) LIKE LOWER($1)
                 OR broj_knjige::text LIKE $1
                 OR redni_broj::text LIKE $1
+                OR LOWER(drzava) LIKE LOWER($1)
+                OR LOWER(jmbg) LIKE LOWER($1)
+                OR broj_uverenja::text LIKE $1
                 ORDER BY id DESC
                 LIMIT $2 OFFSET $3`;
             
@@ -322,7 +339,10 @@ app.get('/pretraga', requireAuth, async (req, res) => {
                     OR LOWER(prezime) LIKE LOWER($3)
                     OR LOWER(ocevo_ime) LIKE LOWER($3)
                     OR broj_knjige::text LIKE $3
-                    OR redni_broj::text LIKE $3`;
+                    OR redni_broj::text LIKE $3
+                    OR LOWER(drzava) LIKE LOWER($3)
+                    OR LOWER(jmbg) LIKE LOWER($3)
+                    OR broj_uverenja::text LIKE $3`;
                 
                 query = `SELECT * FROM lovci 
                     WHERE (LOWER(ime) LIKE LOWER($1) AND LOWER(prezime) LIKE LOWER($2))
@@ -334,6 +354,9 @@ app.get('/pretraga', requireAuth, async (req, res) => {
                     OR LOWER(ocevo_ime) LIKE LOWER($3)
                     OR broj_knjige::text LIKE $3
                     OR redni_broj::text LIKE $3
+                    OR LOWER(drzava) LIKE LOWER($3)
+                    OR LOWER(jmbg) LIKE LOWER($3)
+                    OR broj_uverenja::text LIKE $3
                     ORDER BY 
                         CASE 
                             WHEN LOWER(ime) LIKE LOWER($1) AND LOWER(prezime) LIKE LOWER($2) THEN 1
@@ -350,7 +373,10 @@ app.get('/pretraga', requireAuth, async (req, res) => {
                     OR LOWER(prezime) LIKE LOWER($1)
                     OR LOWER(ocevo_ime) LIKE LOWER($1)
                     OR broj_knjige::text LIKE $1
-                    OR redni_broj::text LIKE $1`;
+                    OR redni_broj::text LIKE $1
+                    OR LOWER(drzava) LIKE LOWER($1)
+                    OR LOWER(jmbg) LIKE LOWER($1)
+                    OR broj_uverenja::text LIKE $1`;
                 
                 query = `SELECT * FROM lovci 
                     WHERE LOWER(ime) LIKE LOWER($1) 
@@ -358,6 +384,9 @@ app.get('/pretraga', requireAuth, async (req, res) => {
                     OR LOWER(ocevo_ime) LIKE LOWER($1)
                     OR broj_knjige::text LIKE $1
                     OR redni_broj::text LIKE $1
+                    OR LOWER(drzava) LIKE LOWER($1)
+                    OR LOWER(jmbg) LIKE LOWER($1)
+                    OR broj_uverenja::text LIKE $1
                     ORDER BY id DESC
                     LIMIT $2 OFFSET $3`;
                 
@@ -400,6 +429,7 @@ app.get('/pretraga', requireAuth, async (req, res) => {
         });
     }
 });
+
 // Detalji dozvole
 app.get('/dozvola/:id', requireAuth, async (req, res) => {
     try {
@@ -435,10 +465,11 @@ app.post('/uredi/:id', requireAuth, async (req, res) => {
     const {
         broj_knjige, broj_stranice, redni_broj, ime, ocevo_ime, prezime,
         datum_rodjenja_d, datum_rodjenja_m, datum_rodjenja_g, mjesto_rodjenja,
-        datum_prijave_d, datum_prijave_m, datum_prijave_g, broj_podnijete_prijave,
+        datum_prijave_d, datum_prijave_m, datum_prijave_g, broj_prijave,
         datum_polaganja_d, datum_polaganja_m, datum_polaganja_g, mjesto_polaganja,
         datum_izdatog_uvjerenja_d, datum_izdatog_uvjerenja_m, datum_izdatog_uvjerenja_g,
-        djelovodni_broj, clan_lovacke_organizacije, opstina
+        djelovodni_broj, clan_lovacke_organizacije, opstina,
+        drzava, jmbg, broj_uverenja
     } = req.body;
 
     const datum_rodjenja = `${datum_rodjenja_g}-${datum_rodjenja_m}-${datum_rodjenja_d}`;
@@ -452,16 +483,18 @@ app.post('/uredi/:id', requireAuth, async (req, res) => {
                 broj_knjige = $1, broj_stranice = $2, redni_broj = $3, 
                 ime = $4, ocevo_ime = $5, prezime = $6,
                 datum_rodjenja = $7, mjesto_rodjenja = $8,
-                datum_prijave = $9, broj_podnijete_prijave = $10,
+                datum_prijave = $9, broj_prijave = $10,
                 datum_polaganja = $11, mjesto_polaganja = $12,
                 datum_izdatog_uvjerenja = $13, djelovodni_broj = $14,
-                clan_lovacke_organizacije = $15, opstina = $16
-            WHERE id = $17`,
+                clan_lovacke_organizacije = $15, opstina = $16,
+                drzava = $17, jmbg = $18, broj_uverenja = $19
+            WHERE id = $20`,
             [
                 broj_knjige, broj_stranice, redni_broj, ime, ocevo_ime, prezime,
-                datum_rodjenja, mjesto_rodjenja, datum_prijave, broj_podnijete_prijave,
+                datum_rodjenja, mjesto_rodjenja, datum_prijave, broj_prijave,
                 datum_polaganja, mjesto_polaganja, datum_izdatog_uvjerenja,
-                djelovodni_broj, clan_lovacke_organizacije, opstina, req.params.id
+                djelovodni_broj, clan_lovacke_organizacije, opstina,
+                drzava, jmbg, broj_uverenja, req.params.id
             ]
         );
         res.redirect('/dozvola/' + req.params.id);
