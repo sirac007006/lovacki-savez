@@ -60,9 +60,8 @@ app.post('/login', async (req, res) => {
     console.log('Username:', username);
     console.log('Password:', password);
     
-    // Admin kredencijali - username: admin, password: admin123
     const adminUsername = 'admin';
-    const adminPasswordHash = '$2a$12$qk6f/gC6MoUvGj8DCyhpn.i8EtkeVtqNYghzly.h8uxQC7Wgh14vm';
+    const adminPasswordHash = '$2a$12$1slrXupx.Uhj2BXQ7GX1QOhsvqnl4T6E3qwiN/9jVbbikdQ1KIZ9e';
     
     console.log('Admin username match:', username === adminUsername);
     
